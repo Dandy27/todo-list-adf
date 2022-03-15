@@ -32,9 +32,9 @@ class LoginPage extends StatelessWidget {
               ),
               child: Form(
                   child: Column(children: [
-                 TodoListField(label: 'Email'),
+                TodoListField(label: 'Email'),
                 const SizedBox(height: 20),
-                 TodoListField(label: 'Senha', obscureText: true),
+                TodoListField(label: 'Senha', obscureText: true),
                 const SizedBox(
                   height: 40,
                 ),
@@ -68,7 +68,9 @@ class LoginPage extends StatelessWidget {
                   children: [
                     const Text('Não tem conta?'),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/register');
+                        },
                         child: const Text(
                           'Cadastre-se',
                         ))
@@ -88,16 +90,23 @@ class LoginPage extends StatelessWidget {
         onPressed: () {},
         child: const Text('Esqueceu sua senha?'),
       ),
-      methodButton('Login')
+       const ButtonElevatedButton(text: 'Login',)
     ]);
   }
+}
 
-  ElevatedButton methodButton(
-    String text,
-  ) {
+class ButtonElevatedButton extends StatelessWidget {
+  final String text;
+  const ButtonElevatedButton({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {},
-      child: Text(text),
+      child:  Text(text),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
