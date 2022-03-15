@@ -106,7 +106,10 @@ class ButtonElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {},
-      child:  Text(text),
+      child:  Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Text(text),
+      ),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
