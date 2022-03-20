@@ -1,55 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list_provider/app/core/validators/validators.dart';
+import 'package:validatorless/validatorless.dart';
 
 import '../../../core/ui/theme_extensions.dart';
 import '../../../core/widget/todo_list_field.dart';
 import '../../../core/widget/todo_list_logo.dart';
 import '../../auth/login/login_page.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
+  final emailEC = TextEditingController();
+  final passwordEC = TextEditingController();
+  final confirmPasswordEC = TextEditingController();
+
+  @override
+  void dispose() {
+    emailEC.dispose();
+    passwordEC.dispose();
+    confirmPasswordEC.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBarTodoListCadastro(context),
-      body: ListView(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.width * .5,
-            child: const FittedBox(
-              child: TodoListLogo(),
-              fit: BoxFit.fitHeight,
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        appBar: appBarTodoListCadastro(context),
+        body: ListView(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.width * .5,
+              child: const FittedBox(
+                child: TodoListLogo(),
+                fit: BoxFit.fitHeight,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 20,
-            ),
-            child: Column(
-              children: [
-                TodoListField(label: 'E-mail'),
-                const SizedBox(height: 20),
-                TodoListField(
-                  label: 'Senha',
-                  obscureText: true,
-                ),
-                const SizedBox(height: 20),
-                TodoListField(
-                  label: 'Confirma Senha',
-                  obscureText: true,
-                ),
-                const SizedBox(height: 20),
-                const Align(
-                  alignment: Alignment.bottomRight,
-                  child:  ButtonElevatedButton(
-                    text: 'Salvar',
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 20,
+              ),
+              child: Column(
+                children: [
+                  TodoListField(
+                      controller: emailEC,
+                      validator: Validatorless.multiple([
+                        Validatorless.required('E-mail obrigatório'),
+                        Validatorless.email('Email inválido')
+                      ]),
+                      label: 'E-mail'),
+                  const SizedBox(height: 20),
+                  TodoListField(
+                    controller: passwordEC,
+                    validator: Validatorless.multiple([
+                      Validatorless.required('Senha obrogatória'),
+                      Validatorless.min(
+                          6, 'Senha deve ter pelo menos 6 caracteres')
+                    ]),
+                    label: 'Senha',
+                    obscureText: true,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  TodoListField(
+                    validator: Validatorless.multiple([
+                      Validatorless.required('Senha obrigatória'),
+                      Validators.compare(
+                          passwordEC, 'Senha diferente de confirma senha')
+                    ]),
+                    controller: confirmPasswordEC,
+                    label: 'Confirma Senha',
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 20),
+                  const Align(
+                    alignment: Alignment.bottomRight,
+                    child: ElevatedButton(
+                        onPressed: () {},
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('Salvar'),
+                        )),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
