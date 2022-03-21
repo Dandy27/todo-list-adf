@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:todo_list_provider/app/repositories/user_repository.dart';
-import 'package:todo_list_provider/exception/auth_exceptions.dart';
+
+import '../../../exception/auth_exceptions.dart';
+import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final FirebaseAuth _firebaseAuth;

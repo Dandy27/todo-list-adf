@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:todo_list_provider/app/repositories/user_repository.dart';
 
-import './user_service.dart';
+import '../../repositories/user/user_repository.dart';
+import 'user_service.dart';
 
 class UserServiceImpl implements UserService {
   final UserRepository _userRepository;
