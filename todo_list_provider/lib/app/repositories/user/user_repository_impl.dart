@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
-import '../../../exception/auth_exceptions.dart';
+import '../../../exception/auth_exception.dart';
 import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -25,16 +26,34 @@ class UserRepositoryImpl implements UserRepository {
         final loginTypes =
             await _firebaseAuth.fetchSignInMethodsForEmail(email);
         if (loginTypes.contains('password')) {
-          throw AuthExceptions(
+          throw AuthException(
               message: 'E-mail já utilizado, por favor escolha outro e-mail');
         } else {
-          throw AuthExceptions(
+          throw AuthException(
               message:
                   'Você se cadastrou no TodoList pelo Google, por favor utilize ele para entrar');
         }
       } else {
-        throw AuthExceptions(message: 'Erro ao registrar o usuário');
+        throw AuthException(message: 'Erro ao registrar o usuário');
       }
+    }
+  }
+
+  @override
+  Future<User?> login(String email, String password) async {
+    try {
+      final userCredencial = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return userCredencial.user;
+    } on PlatformException catch (e, s) {
+      print(e);
+      print(s);
+      throw AuthException(message: e.message ?? 'Erro ao realizar login');
+    } on FirebaseAuthException catch (e, s) {
+      print(e);
+      print(s);
+      throw AuthException(message: e.message ?? 'Erro ao realizar login');
+
     }
   }
 }
