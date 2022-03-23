@@ -38,7 +38,26 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                head3()
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text('Esqueceu sua senha?'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('Login'),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      )
+                    ]),
               ]))),
           const SizedBox(height: 20),
           Expanded(
@@ -73,7 +92,7 @@ class LoginPage extends StatelessWidget {
                         },
                         child: const Text(
                           'Cadastre-se',
-                        ))
+                        )),
                   ],
                 )
               ],
@@ -82,39 +101,5 @@ class LoginPage extends StatelessWidget {
         ])),
       ));
     }));
-  }
-
-  Row head3() {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      TextButton(
-        onPressed: () {},
-        child: const Text('Esqueceu sua senha?'),
-      ),
-       const ButtonElevatedButton(text: 'Login',)
-    ]);
-  }
-}
-
-class ButtonElevatedButton extends StatelessWidget {
-  final String text;
-  const ButtonElevatedButton({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
-      child:  Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Text(text),
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-    );
   }
 }

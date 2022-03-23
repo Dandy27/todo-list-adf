@@ -1,6 +1,5 @@
-import 'package:todo_list_provider/app/core/notifier/default_change_notifier.dart';
-import 'package:todo_list_provider/exception/auth_exception.dart';
-
+import '../../../../exception/auth_exception.dart';
+import '../../../core/notifier/default_change_notifier.dart';
 import '../../../services/user/user_service.dart';
 
 class RegisterController extends DefaultChangeNotifier {
@@ -20,7 +19,7 @@ class RegisterController extends DefaultChangeNotifier {
         setError('Erro ao registrar o usuário');
       }
       notifyListeners();
-    } on AuthExceptions catch (e) {
+    } on AuthException catch (e) {
       setError(e.message);
     } finally {
       hideLoading();
