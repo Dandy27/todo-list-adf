@@ -1,11 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:provider/provider.dart';
+import 'package:validatorless/validatorless.dart';
 
+import '../../../core/notifier/default_listener_notifier.dart';
 import '../../../core/widget/todo_list_field.dart';
 import '../../../core/widget/todo_list_logo.dart';
+import 'login_controller.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailEC = TextEditingController();
+  final _passwordEC = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    DefaultListenerNotifier(changeNotifier: context.read<LoginController>())
+        .listener(
+            context: context,
+            successVoildCallback: (notifier, listenerInstance) {
+              print('Login Efetuado com sucesso');
+            });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,34 +54,60 @@ class LoginPage extends StatelessWidget {
                 vertical: 20,
               ),
               child: Form(
+                  key: _formKey,
                   child: Column(children: [
-                TodoListField(label: 'Email'),
-                const SizedBox(height: 20),
-                TodoListField(label: 'Senha', obscureText: true),
-                const SizedBox(
-                  height: 40,
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text('Esqueceu sua senha?'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text('Login'),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                    TodoListField(
+                      label: 'Email',
+                      controller: _emailEC,
+                      validator: Validatorless.multiple([
+                        Validatorless.required('E-mail obrigatório'),
+                        Validatorless.email('E-mail inválido')
+                      ]),
+                    ),
+                    const SizedBox(height: 20),
+                    TodoListField(
+                        label: 'Senha',
+                        controller: _passwordEC,
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Senha obrigatória'),
+                          Validatorless.min(
+                              6, 'Senha deve conter no minimo 6 caracteres'),
+                        ]),
+                        obscureText: true),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text('Esqueceu sua senha?'),
                           ),
-                        ),
-                      )
-                    ]),
-              ]))),
+                          ElevatedButton(
+                            onPressed: () {
+                              final formValid =
+                                  _formKey.currentState?.validate() ?? false;
+                              if (formValid) {
+                                final email = _emailEC.text;
+                                final password = _passwordEC.text;
+                                context
+                                    .read<LoginController>()
+                                    .login(email, password);
+                              }
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text('Login'),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                          )
+                        ]),
+                  ]))),
           const SizedBox(height: 20),
           Expanded(
               child: Container(
