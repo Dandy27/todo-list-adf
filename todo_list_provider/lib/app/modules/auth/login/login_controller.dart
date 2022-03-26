@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../../../core/notifier/default_change_notifier.dart';
 import '../../../exception/auth_exception.dart';
 import '../../../services/user/user_service.dart';
@@ -9,6 +11,24 @@ class LoginController extends DefaultChangeNotifier {
       : _userService = userService;
 
   bool get hasInfo => infoMessage != null;
+
+  Future<User?> googleLogin() async {
+    try {
+      showLoadingAndResetState();
+      infoMessage = null;
+      notifyListeners();
+      final user = await _userService.googleLogin();
+      if (user != null) {
+        success();
+      } else {
+        setError('Erro ao realizar login com o Google');
+      }
+    } on AuthException catch (e) {
+      setError(e.message);
+    } finally {
+      notifyListeners();
+    }
+  }
 
   Future<void> login(String email, String password) async {
     try {
