@@ -37,12 +37,14 @@ class _RegisterPageState extends State<RegisterPage> {
         changeNotifier: context.read<RegisterController>());
     defaultListener.listener(
       context: context,
-      successVoildCallback: (notifier, listenerInstance) {
+      successCallback: (notifier, listenerInstance) {
         listenerInstance.dispose();
         Navigator.of(context).pushNamed('/login');
       },
+      everCallback: (notifier, listenerInstance) {},
+      errorCallback: (notifier, listenerInstance) {},
       //esse atributo é opcional
-      // errorVoildCallback: (notifier, listenerInstande) {
+      // errorCallback: (notifier, listenerInstande) {
       //   print('Deu ruim!!!!');
       // },
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:todo_list_provider/app/core/ui/messages.dart';
+
+import '../ui/messages.dart';
 import 'default_change_notifier.dart';
 
 class DefaultListenerNotifier {
@@ -10,21 +11,25 @@ class DefaultListenerNotifier {
 
   void listener(
       {required BuildContext context,
-      required SuccessVoildCallback successVoildCallback,
-      ErrorVoildCallback? errorVoildCallback}) {
+      required SuccessVoidCallback successCallback,
+       ErrorVoidCallback? errorCallback,
+      EverVoidCallback? everCallback}) {
     changeNotifier.addListener(() {
+      if (everCallback != null) {
+        everCallback(changeNotifier, this);
+      }
       if (changeNotifier.loading) {
         Loader.show(context);
       } else {
         Loader.hide();
       }
       if (changeNotifier.hasError) {
-        if (errorVoildCallback != null) {
-          errorVoildCallback(changeNotifier, this);
+        if (errorCallback != null) {
+          errorCallback(changeNotifier, this);
         }
         Messages.of(context).showError(changeNotifier.error ?? 'Erro interno');
       } else if (changeNotifier.isSuccess) {
-        successVoildCallback(changeNotifier, this);
+        successCallback(changeNotifier, this);
       }
     });
   }
@@ -34,12 +39,16 @@ class DefaultListenerNotifier {
   }
 }
 
-typedef SuccessVoildCallback = void Function(
+typedef SuccessVoidCallback = void Function(
   DefaultChangeNotifier notifier,
   DefaultListenerNotifier listenerInstance,
 );
 
-typedef ErrorVoildCallback = void Function(
+typedef ErrorVoidCallback = void Function(
+  DefaultChangeNotifier notifier,
+  DefaultListenerNotifier listenerInstance,
+);
+typedef EverVoidCallback = void Function(
   DefaultChangeNotifier notifier,
   DefaultListenerNotifier listenerInstance,
 );
