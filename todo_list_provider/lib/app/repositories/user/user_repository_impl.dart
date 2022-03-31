@@ -82,13 +82,8 @@ class UserRepositoryImpl implements UserRepository {
   Future<User?> googleLogin() async {
     List<String>? loginMethods;
     try {
-<<<<<<< HEAD
       final googleSignIn = GoogleSignIn();
       final googleUser = await googleSignIn.signIn();
-=======
-      final googleSingIn = GoogleSignIn();
-      final googleUser = await googleSingIn.signIn();
->>>>>>> e96d234ffdfac4037fa04b072e2f76cad09d0d5a
       if (googleUser != null) {
         loginMethods =
             await _firebaseAuth.fetchSignInMethodsForEmail(googleUser.email);
@@ -96,7 +91,6 @@ class UserRepositoryImpl implements UserRepository {
         if (loginMethods.contains('password')) {
           throw AuthException(
               message:
-<<<<<<< HEAD
                   'Você utilizou o e-mail para cadastro TodoList, caso tenha esquecido sua semha por favor click no link esqueci minha senha ');
         } else {
           final googleAuth = await googleUser.authentication;
@@ -105,22 +99,11 @@ class UserRepositoryImpl implements UserRepository {
           var userCrential =
               await _firebaseAuth.signInWithCredential(firebaseCredential);
           return userCrential.user;
-=======
-                  'Você utilizou o e-mail para cadastro no TodoList, caso tenha esquecido sua senha por favor clique no link esqueci minha senha ');
-        } else {
-          final googleAuth = await googleUser.authentication;
-          final firebaseCredencial = GoogleAuthProvider.credential(
-              accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-          var userCredencial =
-              await _firebaseAuth.signInWithCredential(firebaseCredencial);
-          return userCredencial.user;
->>>>>>> e96d234ffdfac4037fa04b072e2f76cad09d0d5a
         }
       }
     } on FirebaseAuthException catch (e, s) {
       print(e);
       print(s);
-<<<<<<< HEAD
       if (e.code == 'account-exits-with-different-credential') {
         throw AuthException(
             message:
@@ -137,16 +120,5 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> googleLogout() async {
     await GoogleSignIn().signOut();
     _firebaseAuth.signOut();
-=======
-      if (e.code == 'account-exists-with-different-credential') {
-        throw AuthException(message: '''
-              Login inválido você se registrou no TodoList com os seguintes provedores:
-              ${loginMethods?.join(',')}''');
-      } else {
-        throw AuthException(message: 'Erro ao realizar login');
-      }
-    }
-    // return null;
->>>>>>> e96d234ffdfac4037fa04b072e2f76cad09d0d5a
   }
 }
