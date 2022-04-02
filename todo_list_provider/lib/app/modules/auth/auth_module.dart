@@ -6,7 +6,7 @@ import 'login/login_page.dart';
 import 'register/register_controller.dart';
 import 'register/register_page.dart';
 
-class AuthModule extends TodoListModules {
+class AuthModule extends TodoListModule {
   AuthModule()
       : super(
           bindings: [
