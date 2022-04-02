@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_list_provider/app/core/auth/auth_provider.dart';
+import 'package:todo_list_provider/app/modules/home/widgets/home_drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,14 +9,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
+        centerTitle: true,
       ),
-      body: Center(
-        child: TextButton(
-            onPressed: () {
-              context.read<AuthProvider>().logout();
-            },
-            child: const Text('Logout')),
-      ),
+      drawer:  HomeDrawer(),
+      body: Container(),
     );
   }
 }
