@@ -34,6 +34,7 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Todo List Provider',
       theme: TodoListConfig.theme,
       navigatorKey: TotoListNavigator.navigatorKey,
