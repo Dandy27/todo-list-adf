@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../auth/auth_provider.dart';
-import '../ui/theme_extensions.dart';
+import '../../../core/auth/auth_provider.dart';
+import '../../../core/ui/theme_extensions.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({Key? key}) : super(key: key);

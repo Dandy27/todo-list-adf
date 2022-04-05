@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list_provider/app/core/widget/home_filters.dart';
+import 'package:todo_list_provider/app/modules/home/widgets/home_filters.dart';
+import 'package:todo_list_provider/app/modules/home/widgets/home_tasks.dart';
+import 'package:todo_list_provider/app/modules/home/widgets/home_week_filter.dart';
 
 import '../../core/ui/theme_extensions.dart';
 import '../../core/ui/todo_list_icons.dart';
-import '../../core/widget/home_header.dart';
+import 'widgets/home_header.dart';
 import 'widgets/home_drawer.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,9 +14,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFFAFBFE),
       appBar: AppBar(
         iconTheme: IconThemeData(color: context.primaryColor),
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFFFAFBFE),
         elevation: 0,
         actions: [
           PopupMenuButton(
@@ -23,6 +26,11 @@ class HomePage extends StatelessWidget {
                 [const PopupMenuItem<bool>(child: Text('Tarefas concluídas'))],
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: context.primaryColor,
+        onPressed: () {},
+        child: const Icon(Icons.add),
       ),
       drawer: HomeDrawer(),
       body: LayoutBuilder(
@@ -40,6 +48,8 @@ class HomePage extends StatelessWidget {
                     children: const [
                       HomeHeader(),
                       HomeFilters(),
+                      HomeWeekFilter(),
+                      HomeTasks(),
                     ],
                   ),
                 ),

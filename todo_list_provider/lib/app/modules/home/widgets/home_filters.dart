@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list_provider/app/core/widget/todo_card_filter.dart';
 
-import '../ui/theme_extensions.dart';
+import '../../../core/ui/theme_extensions.dart';
+import '../../../core/widget/todo_card_filter.dart';
 
 class HomeFilters extends StatefulWidget {
   const HomeFilters({Key? key}) : super(key: key);
