@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list_provider/app/core/ui/theme_extensions.dart';
-import 'package:todo_list_provider/app/core/widget/todo_list_field.dart';
 
+import '../../core/ui/theme_extensions.dart';
+import '../../core/widget/todo_list_field.dart';
+import 'calendar_button.dart';
 import 'task_create_controller.dart';
 
 class TaskCreatePage extends StatelessWidget {
@@ -31,6 +32,7 @@ class TaskCreatePage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: context.primaryColor,
           onPressed: (() {}),
           label: const Text(
             'Salvar Task',
@@ -53,7 +55,9 @@ class TaskCreatePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            TodoListField(label: '')
+            TodoListField(label: ''),
+             const SizedBox(height: 20),
+             const CalendarButton()
 
           ],
         ),
