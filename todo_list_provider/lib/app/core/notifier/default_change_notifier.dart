@@ -15,10 +15,10 @@ class DefaultChangeNotifier extends ChangeNotifier {
   void setError(String? error) => _error = error;
   void showLoadingAndResetState() {
     showLoading();
-    resetLoading();
+    resetState();
   }
 
-  void resetLoading() {
+  void resetState() {
     setError(null);
     _success = false;
   }
