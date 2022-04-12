@@ -39,7 +39,6 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       successCallback: (notifier, listenerInstance) {
         listenerInstance.dispose();
-        Navigator.of(context).pushNamed('/login');
       },
       everCallback: (notifier, listenerInstance) {},
       errorCallback: (notifier, listenerInstance) {},
@@ -169,7 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
       automaticallyImplyLeading: false,
       leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop();
           },
           icon: ClipOval(
             child: Container(
