@@ -3,14 +3,29 @@ import 'package:flutter/material.dart';
 import '../../core/ui/theme_extensions.dart';
 import '../../core/ui/todo_list_icons.dart';
 import '../tasks/tasks_module.dart';
+import 'home_controller.dart';
 import 'widgets/home_drawer.dart';
 import 'widgets/home_filters.dart';
 import 'widgets/home_header.dart';
 import 'widgets/home_tasks.dart';
 import 'widgets/home_week_filter.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  final HomeController _homeController;
+  const HomePage({Key? key, required HomeController homeController})
+      : _homeController = homeController,
+        super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    widget._homeController.loadTotaTasks();
+  }
 
   void _goToCreateTask(BuildContext context) {
     Navigator.of(context).push(
@@ -19,8 +34,11 @@ class HomePage extends StatelessWidget {
         transitionsBuilder: (context, animation, secondaryNimation, child) {
           animation =
               CurvedAnimation(parent: animation, curve: Curves.easeInQuad);
-          return ScaleTransition(scale: animation, alignment: Alignment.bottomRight,
-          child: child ,);
+          return ScaleTransition(
+            scale: animation,
+            alignment: Alignment.bottomRight,
+            child: child,
+          );
         },
         pageBuilder: (context, animation, secondaryAnimation) {
           return TasksModule().getPage('/task/create', context);
