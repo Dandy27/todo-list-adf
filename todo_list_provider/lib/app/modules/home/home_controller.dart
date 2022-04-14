@@ -7,14 +7,16 @@ import '../../services/tasks/tasks_service.dart';
 
 class HomeController extends DefaultChangeNotifier {
   final TasksService _tasksService;
+  var filterSelected = TaskFilterEnum.today;
   TotalTasksModel? todayTotalTasks;
   TotalTasksModel? tomorrowTotalTasks;
   TotalTasksModel? weekTotalTasks;
+  List<TaskModel> allTasks = [];
+  List<TaskModel> filteredTasks = [];
   HomeController({required TasksService tasksService})
       : _tasksService = tasksService;
-  var filterSelected = TaskFilterEnum.today;
 
-  void loadTotaTasks() async {
+  Future<void> loadTotalTasks() async {
     final allTasks = await Future.wait([
       _tasksService.getToday(),
       _tasksService.getTomorrow(),
@@ -25,13 +27,45 @@ class HomeController extends DefaultChangeNotifier {
     final tomorrowTasks = allTasks[1] as List<TaskModel>;
     final weekTasks = allTasks[2] as WeekTaskModel;
 
-     todayTotalTasks = TotalTasksModel(
+    todayTotalTasks = TotalTasksModel(
         totalTasks: todayTasks.length,
         totalTasksFinish: tomorrowTasks.where((task) => task.finished).length);
-     tomorrowTotalTasks = TotalTasksModel(
+    tomorrowTotalTasks = TotalTasksModel(
         totalTasks: weekTasks.tasks.length,
         totalTasksFinish:
             weekTasks.tasks.where((task) => task.finished).length);
+    notifyListeners();
+  }
+
+  Future<void> findTasks({required TaskFilterEnum filter}) async {
+    filterSelected = filter;
+    showLoading();
+    notifyListeners();
+    List<TaskModel> tasks;
+
+    switch (filter) {
+      case TaskFilterEnum.today:
+        tasks = await _tasksService.getToday();
+        break;
+      case TaskFilterEnum.tomorrow:
+        tasks = await _tasksService.getTomorrow();
+        break;
+      case TaskFilterEnum.week:
+        final weekModel = await _tasksService.getWeek();
+        tasks = weekModel.tasks;
+
+        break;
+    }
+    filteredTasks = tasks;
+    allTasks = tasks;
+
+    hideLoading();
+    notifyListeners();
+  }
+
+  void refreshPage() async {
+    await findTasks(filter: filterSelected);
+    await loadTotalTasks();
     notifyListeners();
   }
 }
