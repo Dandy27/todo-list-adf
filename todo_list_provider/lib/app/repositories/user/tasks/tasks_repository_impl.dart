@@ -1,6 +1,5 @@
-import 'package:todo_list_provider/app/models/task_model.dart';
-
 import '../../../core/database/sqlite_connection_factory.dart';
+import '../../../models/task_model.dart';
 import 'tasks_repository.dart';
 
 class TasksRepositoryImpl implements TasksRepository {
@@ -26,7 +25,7 @@ class TasksRepositoryImpl implements TasksRepository {
     final endFilter = DateTime(end.year, end.month, end.day, 23, 59, 59);
 
     final conn = await _sqliteConnectionFactory.openConnection();
-    final result = await  conn.rawQuery('''
+    final result = await conn.rawQuery('''
        select * 
        from todo 
        where data_hora between ? and ? 
@@ -37,5 +36,13 @@ class TasksRepositoryImpl implements TasksRepository {
       endFilter.toIso8601String(),
     ]);
     return result.map((e) => TaskModel.loadFromDB(e)).toList();
+  }
+
+  @override
+  Future<void> checkOrUncheckTask(TaskModel task) async {
+    final conn = await _sqliteConnectionFactory.openConnection();
+    final finshed = task.finished ? 1 : 0;
+    await conn.rawUpdate(
+        'update todo set finalizado = ? where id = ?', [finshed, task.id]);
   }
 }
